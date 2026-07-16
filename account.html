@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>حساب کاربری | NOQTEH</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .account-page { padding: 120px 5vw 80px; min-height: 80vh; }
+    .account-tabs { display: flex; gap: 12px; border-bottom: 1px solid var(--color-border, #E8E0D4); margin-bottom: 32px; }
+    .account-tabs button { background: transparent; color: var(--color-text, #2C2825); border-radius: 0; padding: 12px 20px; border-bottom: 2px solid transparent; }
+    .account-tabs button.active { border-bottom-color: var(--color-accent, #A67C52); color: var(--color-accent, #A67C52); }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+    .order-card { background: var(--color-bg-warm, #F2EBE0); padding: 20px; border-radius: 8px; margin-bottom: 16px; }
+    .address-card { background: var(--color-bg-warm, #F2EBE0); padding: 16px; border-radius: 8px; margin-bottom: 12px; position: relative; }
+    .address-card .default-badge { position: absolute; top: 16px; left: 16px; font-size: 12px; background: var(--color-accent, #A67C52); color: #fff; padding: 4px 10px; border-radius: 12px; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; margin-bottom: 6px; font-size: 14px; }
+    .form-group input { width: 100%; padding: 12px; border: 1px solid var(--color-border, #E8E0D4); background: transparent; }
+    .btn-outline { background: transparent; border: 1px solid var(--color-accent, #A67C52); color: var(--color-accent, #A67C52); }
+    .login-required { text-align: center; padding: 80px 20px; }
+  </style>
+</head>
+<body>
+  <main class="account-page">
+    <h1 class="section-title">حساب کاربری</h1>
+
+    <div id="auth-panel" class="login-required">
+      <p>برای مشاهده حساب کاربری ابتدا وارد شوید.</p>
+      <a href="#login" class="btn" id="open-login-from-account">ورود / ثبت‌نام</a>
+    </div>
+
+    <div id="account-panel" class="hidden">
+      <div class="account-tabs">
+        <button class="active" data-tab="orders">سفارشات</button>
+        <button data-tab="addresses">آدرس‌ها</button>
+        <button data-tab="profile">پروفایل</button>
+      </div>
+
+      <div id="orders-panel" class="tab-panel active">
+        <h2>تاریخچه سفارشات</h2>
+        <div id="orders-list"></div>
+      </div>
+
+      <div id="addresses-panel" class="tab-panel">
+        <h2>آدرس‌های ارسال</h2>
+        <button class="btn btn-outline" id="add-address-btn">+ افزودن آدرس</button>
+        <div id="addresses-list"></div>
+        <form id="address-form" class="hidden" style="margin-top:24px;">
+          <div class="form-group"><label>عنوان آدرس</label><input name="title" placeholder="مثلاً خانه"></div>
+          <div class="form-group"><label>نام گیرنده</label><input name="recipientName" required></div>
+          <div class="form-group"><label>موبایل</label><input name="phone" required></div>
+          <div class="form-group"><label>استان</label><input name="province" required></div>
+          <div class="form-group"><label>شهر</label><input name="city" required></div>
+          <div class="form-group"><label>محله</label><input name="district"></div>
+          <div class="form-group"><label>کد پستی</label><input name="postalCode"></div>
+          <div class="form-group"><label>آدرس کامل</label><input name="address" required></div>
+          <label><input type="checkbox" name="isDefault"> آدرس پیش‌فرض</label>
+          <div style="margin-top:16px;">
+            <button type="submit" class="btn">ذخیره</button>
+            <button type="button" class="btn btn-secondary" id="cancel-address">انصراف</button>
+          </div>
+        </form>
+      </div>
+
+      <div id="profile-panel" class="tab-panel">
+        <h2>پروفایل</h2>
+        <form id="profile-form">
+          <div class="form-group"><label>نام</label><input name="firstName"></div>
+          <div class="form-group"><label>نام خانوادگی</label><input name="lastName"></div>
+          <div class="form-group"><label>موبایل</label><input name="phone"></div>
+          <button type="submit" class="btn">ذخیره تغییرات</button>
+        </form>
+        <hr style="margin:32px 0; border-color:var(--color-border);">
+        <h3>تغییر رمز عبور</h3>
+        <form id="password-form">
+          <div class="form-group"><label>رمز فعلی</label><input type="password" name="currentPassword" required></div>
+          <div class="form-group"><label>رمز جدید</label><input type="password" name="newPassword" required minlength="6"></div>
+          <button type="submit" class="btn">تغییر رمز</button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/account.js"></script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>پرداخت موفق | NOQTEH</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .payment-result { min-height: 70vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 40px 20px; }
+    .payment-result .box { max-width: 480px; }
+    .payment-result h1 { font-size: 32px; margin-bottom: 16px; color: var(--color-accent, #A67C52); }
+    .payment-result p { color: var(--color-text-light, #8A8279); margin-bottom: 24px; }
+    .payment-result .btn { display: inline-block; }
+  </style>
+</head>
+<body>
+  <main class="payment-result">
+    <div class="box">
+      <h1>پرداخت با موفقیت انجام شد</h1>
+      <p>سفارش شما ثبت شد. کد رهگیری: <strong id="ref-id"></strong></p>
+      <p>شماره سفارش: <strong id="order-id"></strong></p>
+      <a href="index.html" class="btn">بازگشت به صفحه اصلی</a>
+      <a href="account.html" class="btn btn-secondary">مشاهده سفارشات</a>
+    </div>
+  </main>
+  <script>
+    const params = new URLSearchParams(location.search);
+    document.getElementById('ref-id').textContent = params.get('ref') || '-';
+    document.getElementById('order-id').textContent = params.get('order') || '-';
+  </script>
+</body>
+</html>
