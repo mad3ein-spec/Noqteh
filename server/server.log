@@ -1,0 +1,4 @@
+NOQTEH server running at http://localhost:9000
+Admin panel: http://localhost:9000/admin
+[0mPOST /api/auth/register [33m409[0m 8.850 ms - 92[0m
+[0mPOST /api/auth/register [32m201[0m 99.812 ms - 399[0m
