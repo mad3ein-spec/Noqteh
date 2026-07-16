@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>پنل مدیریت NOQTEH</title>
+  <link rel="stylesheet" href="/admin/style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Login -->
+    <div id="login-page" class="login-page">
+      <div class="login-box">
+        <h1>NOQTEH</h1>
+        <p>پنل مدیریت فروشگاه</p>
+        <form id="login-form">
+          <input type="email" name="email" placeholder="ایمیل" required>
+          <input type="password" name="password" placeholder="رمز عبور" required>
+          <button type="submit">ورود</button>
+        </form>
+        <div id="login-error" class="error"></div>
+      </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="admin-layout" class="admin-layout hidden">
+      <aside class="sidebar">
+        <div class="brand">NOQTEH Admin</div>
+        <nav>
+          <a href="#dashboard" data-page="dashboard" class="active">داشبورد</a>
+          <a href="#products" data-page="products">محصولات</a>
+          <a href="#orders" data-page="orders">سفارشات</a>
+          <a href="#users" data-page="users">کاربران</a>
+          <a href="#settings" data-page="settings">تنظیمات</a>
+        </nav>
+        <div class="sidebar-footer">
+          <span id="admin-name"></span>
+          <button id="logout-btn">خروج</button>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <h2 id="page-title">داشبورد</h2>
+        </header>
+
+        <section id="dashboard-page" class="page">
+          <div class="stats-grid">
+            <div class="stat-card"><span class="stat-value" id="stat-orders">0</span><span class="stat-label">کل سفارشات</span></div>
+            <div class="stat-card"><span class="stat-value" id="stat-revenue">0</span><span class="stat-label">درآمد (تومان)</span></div>
+            <div class="stat-card"><span class="stat-value" id="stat-products">0</span><span class="stat-label">محصولات</span></div>
+            <div class="stat-card"><span class="stat-value" id="stat-users">0</span><span class="stat-label">کاربران</span></div>
+            <div class="stat-card"><span class="stat-value" id="stat-pending">0</span><span class="stat-label">در انتظار</span></div>
+          </div>
+          <h3>آخرین سفارشات</h3>
+          <table class="data-table">
+            <thead><tr><th>شماره سفارش</th><th>مبلغ</th><th>وضعیت</th><th>پرداخت</th><th>تاریخ</th></tr></thead>
+            <tbody id="recent-orders"></tbody>
+          </table>
+        </section>
+
+        <section id="products-page" class="page hidden">
+          <div class="actions-bar">
+            <button id="add-product-btn" class="btn btn-primary">+ محصول جدید</button>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr><th>کد</th><th>نام</th><th>قیمت</th><th>موجودی</th><th>وضعیت</th><th>عملیات</th></tr>
+            </thead>
+            <tbody id="products-list"></tbody>
+          </table>
+        </section>
+
+        <section id="orders-page" class="page hidden">
+          <div class="filters">
+            <select id="order-status-filter"><option value="">همه وضعیت‌ها</option><option value="pending">در انتظار</option><option value="processing">در حال پردازش</option><option value="shipped">ارسال شده</option><option value="delivered">تحویل داده شده</option><option value="cancelled">لغو شده</option></select>
+            <select id="payment-status-filter"><option value="">همه پرداخت‌ها</option><option value="unpaid">پرداخت نشده</option><option value="paid">پرداخت شده</option><option value="refunded">استرداد</option></select>
+            <input type="text" id="order-search" placeholder="جستجوی شماره سفارش">
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr><th>شماره</th><th>مشتری</th><th>مبلغ</th><th>وضعیت</th><th>پرداخت</th><th>ارسال</th><th>تاریخ</th><th>عملیات</th></tr>
+            </thead>
+            <tbody id="orders-list"></tbody>
+          </table>
+        </section>
+
+        <section id="users-page" class="page hidden">
+          <table class="data-table">
+            <thead><tr><th>ایمیل</th><th>نام</th><th>موبایل</th><th>نقش</th><th>وضعیت</th><th>عملیات</th></tr></thead>
+            <tbody id="users-list"></tbody>
+          </table>
+        </section>
+
+        <section id="settings-page" class="page hidden">
+          <form id="settings-form" class="form-grid">
+            <label>نام فروشگاه<input type="text" name="site.name"></label>
+            <label>هزینه پایه ارسال<input type="number" name="shipping.base_cost"></label>
+            <label>آستانه ارسال رایگان<input type="number" name="shipping.free_threshold"></label>
+            <label>مرچنت زرین‌پال<input type="text" name="zarinpal.merchant_id"></label>
+            <label>حالت تست زرین‌پال
+              <select name="zarinpal.sandbox"><option value="true">فعال</option><option value="false">غیرفعال</option></select>
+            </label>
+            <button type="submit" class="btn btn-primary">ذخیره تنظیمات</button>
+          </form>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- Product Modal -->
+  <div id="product-modal" class="modal hidden">
+    <div class="modal-content">
+      <h3 id="product-modal-title">محصول جدید</h3>
+      <form id="product-form" class="form-grid">
+        <input type="hidden" name="id">
+        <label>کد SKU<input type="text" name="sku" required></label>
+        <label>اسلاگ<input type="text" name="slug" required></label>
+        <label>نام فارسی<input type="text" name="nameFa" required></label>
+        <label>نام انگلیسی<input type="text" name="nameEn"></label>
+        <label>قیمت<input type="number" name="price" required></label>
+        <label>قیمت قبلی<input type="number" name="comparePrice"></label>
+        <label>موجودی<input type="number" name="stock" value="0"></label>
+        <label>وزن (گرم)<input type="number" name="weightGrams" value="0"></label>
+        <label>دسته‌بندی
+          <select name="categoryId"><option value="">بدون دسته</option></select>
+        </label>
+        <label>تصاویر (JSON آرایه URL)<textarea name="images" rows="2">[]</textarea></label>
+        <label>رنگ‌ها (JSON آرایه)<textarea name="colors" rows="2">[]</textarea></label>
+        <label>سایزها (JSON آرایه)<textarea name="sizes" rows="2">[]</textarea></label>
+        <label>توضیحات<textarea name="description" rows="3"></textarea></label>
+        <label>ویژه<input type="checkbox" name="isFeatured"></label>
+        <label>فعال<input type="checkbox" name="isActive" checked></label>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="close-product-modal">انصراف</button>
+          <button type="submit" class="btn btn-primary">ذخیره</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Order Detail Modal -->
+  <div id="order-modal" class="modal hidden">
+    <div class="modal-content">
+      <h3>جزئیات سفارش</h3>
+      <div id="order-detail"></div>
+      <form id="order-status-form" class="form-grid">
+        <label>وضعیت سفارش
+          <select name="status"><option value="pending">در انتظار</option><option value="processing">در حال پردازش</option><option value="shipped">ارسال شده</option><option value="delivered">تحویل داده شده</option><option value="cancelled">لغو شده</option><option value="returned">مرجوع</option></select>
+        </label>
+        <label>وضعیت پرداخت
+          <select name="paymentStatus"><option value="unpaid">پرداخت نشده</option><option value="paid">پرداخت شده</option><option value="refunded">استرداد</option><option value="failed">ناموفق</option></select>
+        </label>
+        <label>وضعیت ارسال
+          <select name="shippingStatus"><option value="pending">در انتظار</option><option value="ready">آماده ارسال</option><option value="shipped">ارسال شده</option><option value="delivered">تحویل داده شده</option></select>
+        </label>
+        <label>کد رهگیری<input type="text" name="trackingCode"></label>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="close-order-modal">بستن</button>
+          <button type="submit" class="btn btn-primary">ذخیره</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="/admin/app.js"></script>
+</body>
+</html>
